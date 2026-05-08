@@ -1,6 +1,6 @@
-package br.com.sistembancario2026.view;
+package br.com.sistemabancario2026.view;
 
-import br.com.sistembancario2026.model.Conta;
+import br.com.sistemabancario2026.model.Conta;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -10,6 +10,8 @@ public class Lab01Sistema {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
+        Lab01Sistema sistema = new Lab01Sistema();
+        sistema.exibirMenu();
 
     }
 
@@ -32,13 +34,15 @@ public class Lab01Sistema {
                     executarDeposito(sc);
                 case 0:
                     System.out.println("Encerrando o programa");
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
             }
         }
         sc.close();
     }
 
     private void executarCadastramento(Scanner sc) {
-        System.out.println("Cadastro de Conta");
+        System.out.println("===== Cadastro de Conta =====");
 
         System.out.println("Digite o número da sua agência:");
         int numeroAgencia = sc.nextInt();
@@ -54,7 +58,7 @@ public class Lab01Sistema {
         System.out.println("Digite o seu saldo:");
         double saldo = sc.nextDouble();
 
-        if (confirmarOperacao(sc, "Cadastramento")) {
+        if (confirmarOperacao(sc, "CADASTRO")) {
             conta.numeroAgencia = numeroAgencia;
             conta.numeroConta = numeroConta;
             conta.nomeCliente = nomeCliente;
@@ -66,6 +70,7 @@ public class Lab01Sistema {
 
     private boolean confirmarOperacao(Scanner sc, String operacao) {
         System.out.println("Deseja continuar com a operação de " + operacao + "? (S/N)");
+        sc.nextLine();
         String resposta = sc.nextLine().toUpperCase();
 
         if (resposta.equals("S")) {
@@ -76,7 +81,33 @@ public class Lab01Sistema {
         return false;
     }
 
-    private void executarSaque(Scanner sc) {}
+    private void executarSaque(Scanner sc) {
+        System.out.println("===== Saque =====");
 
-    private void executarDeposito(Scanner sc) {}
+        System.out.println("Digite o valor do saque:");
+        double saque = sc.nextDouble();
+
+        if (saque > conta.saldo) {
+            System.out.println("ATENÇÃO - Saldo insuficiente.");
+            return;
+        }
+
+        if (confirmarOperacao(sc, "SAQUE")) {
+            conta.saldo -= saque;
+            System.out.printf("Saque realizado! Novo saldo: R$ %.2f%n", conta.saldo);
+        }
+    }
+
+    private void executarDeposito(Scanner sc) {
+        System.out.println("===== Depósito =====");
+
+        System.out.println("Digite o valor do deposito:");
+        double valorDeposito = sc.nextDouble();
+
+        if (confirmarOperacao(sc, "DEPÓSITO")) {
+            conta.saldo += valorDeposito;
+            System.out.printf("Depósito realizado! Novo saldo: R$ %.2f%n", conta.saldo);
+
+        }
+    }
 }
