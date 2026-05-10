@@ -37,4 +37,25 @@ public class Conta {
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
+
+    public int sacar(double valor) {
+        if (this.saldo > valor) {
+            this.saldo -= valor;
+            return 0;
+        }
+        return 1;
+    }
+
+    public void depositar(double valor) {
+        this.saldo += valor;
+    }
+
+    public void imprimir() {
+        System.out.println("Conta{" +
+                "numeroAgencia=" + numeroAgencia +
+                ", numeroConta=" + numeroConta +
+                ", nomeCliente='" + nomeCliente + '\'' +
+                ", saldo=" + saldo +
+                '}');
+    }
 }
