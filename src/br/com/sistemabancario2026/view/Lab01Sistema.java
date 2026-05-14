@@ -10,8 +10,8 @@ public class Lab01Sistema {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
-        Lab01Sistema sistema = new Lab01Sistema();
-        sistema.exibirMenu();
+        Lab01Sistema app = new Lab01Sistema();
+        app.exibirMenu();
 
     }
 
