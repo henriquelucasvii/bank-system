@@ -22,22 +22,16 @@ public class Lab01Sistema {
         while (option != 0) {
 
             System.out.println("===== Sistema Bancário =====");
-            System.out.println("Escolha uma das opções: \n1 - Cadastramento \n2 - Saque \n3 - Depósito \n0 - Sair");
+            System.out.println("Escolha uma das opções: \n1 - Cadastramento \n2 - Saque \n3 - Depósito \n4 - Consulta \n0 - Sair");
             option = sc.nextInt();
 
             switch (option) {
-                case 1:
-                    executarCadastramento(sc);
-                case 2:
-                    executarSaque(sc);
-                case 3:
-                    executarDeposito(sc);
-                case 4:
-                    executarConsulta();
-                case 0:
-                    System.out.println("Encerrando o programa");
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                case 1 -> executarCadastramento(sc);
+                case 2 -> executarSaque(sc);
+                case 3 -> executarDeposito(sc);
+                case 4 -> executarConsulta();
+                case 0 -> System.out.println("Encerrando o programa");
+                default -> System.out.println("Opção inválida. Tente novamente.");
             }
         }
         sc.close();
@@ -67,9 +61,9 @@ public class Lab01Sistema {
     private boolean confirmarOperacao(Scanner sc, String operacao) {
         System.out.println("Deseja continuar com a operação de " + operacao + "? (S/N)");
         sc.nextLine();
-        String resposta = sc.nextLine().toUpperCase();
+        String resposta = sc.nextLine().toLowerCase().trim();
 
-        if (resposta.equals("S")) {
+        if (resposta.equals("s") || resposta.equals("sim")) {
             return true;
         }
 
@@ -91,7 +85,6 @@ public class Lab01Sistema {
                 } else {
                     System.out.println("ATENÇÃO!: Saldo insuficiente");
                 }
-
             }
         } else {
             System.out.println("Saldo insuficiente.");
@@ -110,23 +103,21 @@ public class Lab01Sistema {
     }
 
     public void executarConsulta() {
-            conta.imprimir();
-        }
-
+        conta.imprimir();
+    }
 
     public int lerNumeroAgEConta(Scanner sc, String msg) {
-        int valor = 0;
+        int valor;
 
-        while (valor < 1) {
+        while (true) {
             System.out.println(msg + " - Digite um valor");
             valor = sc.nextInt();
 
-            if (valor < 1) {
-                System.out.println("Digite um valor maior do que 1");
+            if (valor > 0) {
+                return valor;
             }
+            System.out.println("Digite um valor maior do que 1");
         }
-
-        return valor;
     }
 
     public String lerNomeCliente(Scanner sc) {
@@ -134,13 +125,13 @@ public class Lab01Sistema {
 
         do {
             System.out.println("Digite o seu nome:");
-            nomeCliente = sc.nextLine();
+            nomeCliente = sc.nextLine().trim();
 
-            if (nomeCliente == null) {
+            if (nomeCliente.isEmpty()) {
                 System.out.println("Digite um nome válido");
             }
 
-        } while (nomeCliente == null);
+        } while (nomeCliente.isEmpty());
 
         return nomeCliente;
     }
