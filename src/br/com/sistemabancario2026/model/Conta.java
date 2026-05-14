@@ -51,11 +51,9 @@ public class Conta {
     }
 
     public void imprimir() {
-        System.out.println("Conta{" +
-                "numeroAgencia=" + numeroAgencia +
-                ", numeroConta=" + numeroConta +
-                ", nomeCliente='" + nomeCliente + '\'' +
-                ", saldo=" + saldo +
-                '}');
+        System.out.println("Número da agência: " + this.numeroAgencia +
+                "\nNúmero da Conta: " + this.numeroConta +
+                "\nNome do Cliente: " + this.nomeCliente +
+                "\nSaldo do Cliente: " + this.saldo);
     }
 }
