@@ -6,6 +6,13 @@ public class Conta {
     private String nomeCliente;
     private double saldo;
 
+    public Conta(int numeroAgencia, int numeroConta, String nomeCliente, double saldo) {
+        this.numeroAgencia = numeroAgencia;
+        this.numeroConta = numeroConta;
+        this.nomeCliente = nomeCliente;
+        this.saldo = saldo;
+    }
+
     public int getNumeroAgencia() {
         return numeroAgencia;
     }
