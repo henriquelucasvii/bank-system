@@ -1,12 +1,13 @@
 package br.com.sistemabancario2026.view;
 
 import br.com.sistemabancario2026.model.Conta;
+import br.com.sistemabancario2026.model.ContaCorrenteEspecial;
 
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Lab01Sistema {
-    Conta conta = new Conta();
+    private Conta conta;
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
@@ -49,12 +50,14 @@ public class Lab01Sistema {
         double saldo = lerValorSaqueDeposito(sc, "SALDO INICIAL");
 
         if (confirmarOperacao(sc, "CADASTRO")) {
-            conta.setNumeroConta(numeroAgencia);
-            conta.setNumeroConta(numeroConta);
-            conta.setNomeCliente(nomeCliente);
-            conta.setSaldo(saldo);
-
-            System.out.println("Cadastro Realizado com Sucesso.");
+            if (numeroAgencia > 5000) {
+                float limite = lerNumeroAgEConta(sc, "LIMITE");
+                conta = new ContaCorrenteEspecial(numeroAgencia, numeroConta, nomeCliente, saldo, limite);
+                System.out.println("Cadastro Realizado com Sucesso.");
+            } else {
+                conta = new Conta(numeroAgencia, numeroConta, nomeCliente, saldo);
+                System.out.println("Cadastro Realizado com Sucesso.");
+            }
         }
     }
 
