@@ -5,12 +5,12 @@ import br.com.sistemabancario2026.model.*;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class Lab01Sistema {
+public class LabSistema {
     private Conta conta;
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
-        Lab01Sistema app = new Lab01Sistema();
+        LabSistema app = new LabSistema();
         app.exibirMenu();
 
     }
