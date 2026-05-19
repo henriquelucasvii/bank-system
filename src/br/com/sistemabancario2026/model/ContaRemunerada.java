@@ -1,8 +1,8 @@
 package br.com.sistemabancario2026.model;
 
-public class Conta04Remunerada extends Conta04 implements ContaCorrenteInterface04 {
+public class ContaRemunerada extends Conta implements ContaCorrenteInterface {
 
-    public Conta04Remunerada(int numeroAgencia, int numeroConta, String nomeCliente, double saldo) {
+    public ContaRemunerada(int numeroAgencia, int numeroConta, String nomeCliente, double saldo) {
         super(numeroAgencia, numeroConta, nomeCliente, saldo);
     }
 
