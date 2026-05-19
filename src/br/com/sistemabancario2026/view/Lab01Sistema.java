@@ -1,7 +1,6 @@
 package br.com.sistemabancario2026.view;
 
-import br.com.sistemabancario2026.model.Conta;
-import br.com.sistemabancario2026.model.ContaCorrenteEspecial;
+import br.com.sistemabancario2026.model.*;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -23,7 +22,7 @@ public class Lab01Sistema {
         while (option != 0) {
 
             System.out.println("===== Sistema Bancário =====");
-            System.out.println("Escolha uma das opções: \n1 - Cadastramento \n2 - Saque \n3 - Depósito \n4 - Consulta \n0 - Sair");
+            System.out.println("Escolha uma das opções: \n1 - Cadastramento \n2 - Saque \n3 - Depósito \n4 - Consulta \n5 - Atualizar Rendimentos \n0 - Sair");
             option = sc.nextInt();
 
             switch (option) {
@@ -31,6 +30,7 @@ public class Lab01Sistema {
                 case 2 -> executarSaque(sc);
                 case 3 -> executarDeposito(sc);
                 case 4 -> executarConsulta();
+                case 5 -> executarAtualizacaoJuros();
                 case 0 -> System.out.println("Encerrando o programa");
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -53,11 +53,17 @@ public class Lab01Sistema {
             if (numeroAgencia > 5000) {
                 float limite = lerNumeroAgEConta(sc, "LIMITE");
                 conta = new ContaCorrenteEspecial(numeroAgencia, numeroConta, nomeCliente, saldo, limite);
-                System.out.println("Cadastro Realizado com Sucesso.");
-            } else {
-                conta = new Conta(numeroAgencia, numeroConta, nomeCliente, saldo);
-                System.out.println("Cadastro Realizado com Sucesso.");
             }
+
+            if (numeroAgencia < 1000){
+                conta = new ContaRemunerada(numeroAgencia, numeroConta, nomeCliente, saldo);
+            }
+
+            if (numeroAgencia >= 1000 && numeroAgencia <= 5000){
+                conta = new ContaCorrente(numeroAgencia, numeroConta, nomeCliente, saldo);
+            }
+
+            System.out.println("Cadastro Realizado com Sucesso.");
         }
     }
 
@@ -107,6 +113,14 @@ public class Lab01Sistema {
 
     public void executarConsulta() {
         conta.imprimir();
+    }
+
+    public void executarAtualizacaoJuros() {
+        if (this.conta instanceof ContaCorrenteInterface contaRendeJuros) {
+            contaRendeJuros.calcularJuros();
+        } else {
+            System.out.println("Operação inválida pelo tipo de conta.");
+        }
     }
 
     public int lerNumeroAgEConta(Scanner sc, String msg) {

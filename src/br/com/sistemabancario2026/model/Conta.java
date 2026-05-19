@@ -1,6 +1,6 @@
 package br.com.sistemabancario2026.model;
 
-public class Conta {
+public abstract class Conta {
     private int numeroAgencia;
     private int numeroConta;
     private String nomeCliente;
