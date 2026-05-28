@@ -1,12 +1,14 @@
 package br.com.sistemabancario2026.view;
 
 import br.com.sistemabancario2026.model.*;
+import com.sun.source.tree.WhileLoopTree;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class LabSistema {
-    private Conta conta;
+    private ArrayList<Conta> listaContas = new ArrayList<>();
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
@@ -23,13 +25,13 @@ public class LabSistema {
 
             System.out.println("===== Sistema Bancário =====");
             System.out.println("Escolha uma das opções: \n1 - Cadastramento \n2 - Saque \n3 - Depósito \n4 - Consulta \n5 - Atualizar Rendimentos \n0 - Sair");
-            option = sc.nextInt();
+            option = lerOpcaoMenu(sc,5, "OPÇÕES DO SISTEMA BANCÁRIO");
 
             switch (option) {
                 case 1 -> executarCadastramento(sc);
                 case 2 -> executarSaque(sc);
                 case 3 -> executarDeposito(sc);
-                case 4 -> executarConsulta();
+                case 4 -> executarConsulta(sc);
                 case 5 -> executarAtualizacaoJuros();
                 case 0 -> System.out.println("Encerrando o programa");
                 default -> System.out.println("Opção inválida. Tente novamente.");
@@ -41,17 +43,23 @@ public class LabSistema {
     private void executarCadastramento(Scanner sc) {
         System.out.println("===== Cadastro de Conta =====");
 
-        int numeroAgencia = lerNumeroAgEConta(sc, "NÚMERO DA AGÊNCIA");
-        int numeroConta = lerNumeroAgEConta(sc, "NÚMERO DA CONTA");
+        int numeroConta = lerInteiroSeguro(sc, "NÚMERO DA CONTA");
 
-        sc.nextLine();
+        if (buscarContaPorNumero(numeroConta) != null) {
+            System.out.println("Essa conta já exite");
+            return;
+        }
 
         String nomeCliente = lerNomeCliente(sc);
-        double saldo = lerValorSaqueDeposito(sc, "SALDO INICIAL");
+
+        int numeroAgencia = lerInteiroSeguro(sc, "NÚMERO DA AGÊNCIA");
+        double saldo = lerDoubleSeguro(sc, "SALDO INICIAL");
 
         if (confirmarOperacao(sc, "CADASTRO")) {
+
+            Conta conta = null;
             if (numeroAgencia > 5000) {
-                float limite = lerNumeroAgEConta(sc, "LIMITE");
+                float limite = (float) lerDoubleSeguro(sc, "LIMITE");
                 conta = new ContaCorrenteEspecial(numeroAgencia, numeroConta, nomeCliente, saldo, limite);
             }
 
@@ -63,13 +71,14 @@ public class LabSistema {
                 conta = new ContaCorrente(numeroAgencia, numeroConta, nomeCliente, saldo);
             }
 
+            listaContas.add(conta);
             System.out.println("Cadastro Realizado com Sucesso.");
         }
     }
 
     private boolean confirmarOperacao(Scanner sc, String operacao) {
         System.out.println("Deseja continuar com a operação de " + operacao + "? (S/N)");
-        sc.nextLine();
+
         String resposta = sc.nextLine().toLowerCase().trim();
 
         if (resposta.equals("s") || resposta.equals("sim")) {
@@ -83,27 +92,40 @@ public class LabSistema {
     private void executarSaque(Scanner sc) {
         System.out.println("===== Saque =====");
 
-        double valorSaque = lerValorSaqueDeposito(sc, "SAQUE");
+        Conta conta = obterContaValidada(sc);
+        if (conta == null) {
+            return;
+        }
 
-        if (valorSaque < conta.getSaldo()) {
-            if (confirmarOperacao(sc, "SAQUE")) {
-                int resultado = conta.sacar(valorSaque);
+        double valorSaque = lerDoubleSeguro(sc, "SAQUE");
 
-                if (resultado == 1) {
-                    System.out.printf("Saque realizado com sucesso! Novo saldo: R$ %.2f \n", conta.getSaldo());
-                } else {
-                    System.out.println("ATENÇÃO!: Saldo insuficiente");
-                }
-            }
-        } else {
+        if (valorSaque >= conta.getSaldo()) {
             System.out.println("Saldo insuficiente.");
+            return;
+        }
+
+        if (!confirmarOperacao(sc, "SAQUE")) {
+            return;
+        }
+
+        int resultado = conta.sacar(valorSaque);
+
+        if (resultado == 0) {
+            System.out.printf("Saque realizado com sucesso! Novo saldo: R$ %.2f \n", conta.getSaldo());
+        } else {
+            System.out.println("ATENÇÃO!: Saldo insuficiente");
         }
     }
 
     private void executarDeposito(Scanner sc) {
         System.out.println("===== Depósito =====");
 
-        double valorDeposito = lerValorSaqueDeposito(sc, "DEPÓSITO");
+        Conta conta = obterContaValidada(sc);
+        if (conta == null) {
+            return;
+        }
+
+        double valorDeposito = lerDoubleSeguro(sc, "DEPÓSITO");
 
         if (confirmarOperacao(sc, "DEPÓSITO")) {
             conta.depositar(valorDeposito);
@@ -111,29 +133,65 @@ public class LabSistema {
         }
     }
 
-    public void executarConsulta() {
+    public void executarConsulta(Scanner sc) {
+        Conta conta = obterContaValidada(sc);
+        if (conta == null) {
+            return;
+        }
         conta.imprimir();
     }
 
     public void executarAtualizacaoJuros() {
-        if (this.conta instanceof ContaCorrenteInterface contaRendeJuros) {
-            contaRendeJuros.calcularJuros();
-        } else {
-            System.out.println("Operação inválida pelo tipo de conta.");
+        boolean atualizou = true;
+
+        for (Conta conta: listaContas) {
+            if (conta instanceof ContaCorrenteInterface contaRendeJuros) {
+                contaRendeJuros.calcularJuros();
+                atualizou = false;
+            }
+        }
+
+        if (!atualizou) {
+            System.out.println("Nenhuma conta remunerada encontrada na lista.");
         }
     }
 
-    public int lerNumeroAgEConta(Scanner sc, String msg) {
-        int valor;
-
+    public int lerInteiroSeguro(Scanner sc, String msg) {
         while (true) {
-            System.out.println(msg + " - Digite um valor");
-            valor = sc.nextInt();
+            System.out.println(msg + " - Digite um valor: ");
+            String valorEntrada = sc.nextLine().strip();
 
-            if (valor > 0) {
-                return valor;
+            try {
+                int valor = Integer.parseInt(valorEntrada);
+
+                if (valor > 0) {
+                    return valor;
+                }
+
+                System.out.println("Digite um valor maior que zero");
+            } catch (NumberFormatException error) {
+                System.out.println("ERRO: Digite somente valores numéricos. \nCódigo do erro: " + error);
             }
-            System.out.println("Digite um valor maior do que 1");
+        }
+    }
+
+    public double lerDoubleSeguro(Scanner sc, String msg) {
+        while (true) {
+
+            System.out.println(msg + " - Digite um valor: ");
+            String valorEntrada = sc.nextLine().strip().replace(",", ".");
+
+            try {
+                double valor = Double.parseDouble(valorEntrada);
+
+                if (valor > 0) {
+                    return valor;
+                }
+
+                System.out.println("Digite um valor maior que zero");
+            } catch (NumberFormatException error) {
+                System.out.println("ERRO: Digite somente valores numéricos. \nCódigo do erro: " + error);
+            }
         }
     }
 
@@ -153,18 +211,44 @@ public class LabSistema {
         return nomeCliente;
     }
 
-    public double lerValorSaqueDeposito(Scanner sc, String msg) {
-        double valor;
+    public int lerOpcaoMenu(Scanner sc, int totalOpcoes, String msg) {
+        while (true) {
+            System.out.println("Operações de: " + msg);
+            String valorEntrada = sc.nextLine().strip();
 
-        do {
-            System.out.println(msg + " - Digite um valor:");
-            valor = sc.nextDouble();
+            try {
+                int valor = Integer.parseInt(valorEntrada);
 
-            if (valor < 1) {
-                System.out.println("Digite um valor maior do que 1.");
+                if (valor > 0) {
+                    return valor;
+                }
+
+                System.out.println("Digite um valor maior que zero");
+            } catch (NumberFormatException error) {;
+                System.out.println("ERRO: Digite somente valores numéricos. " + error);
             }
-        } while (valor < 1);
-
-        return valor;
+        }
     }
+
+    public Conta buscarContaPorNumero(int numeroConta) {
+        for(Conta conta: listaContas) {
+            if (numeroConta == conta.getNumeroConta()) {
+                return conta;
+            }
+        }
+        return null;
+    }
+
+    private Conta obterContaValidada(Scanner sc) {
+        int numeroConta = lerInteiroSeguro(sc, "NÚMERO DA CONTA");
+        Conta conta = buscarContaPorNumero(numeroConta);
+
+        if (conta == null) {
+            System.out.println("Conta não encontrada");
+        }
+
+        return conta;
+    }
+
+    //
 }
