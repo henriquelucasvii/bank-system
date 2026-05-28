@@ -50,7 +50,7 @@ public abstract class Conta {
             this.saldo -= valor;
             return 0;
         }
-        return 1;
+        throw new SaldoInsuficienteException("Saldo insuficiente para o saque de R$"+ valor);
     }
 
     public void depositar(double valor) {
