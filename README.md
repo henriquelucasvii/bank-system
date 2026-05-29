@@ -1,15 +1,15 @@
-# Desenvolvimento de Sistema Bancário
+# Bank System Development
 
-Este projeto é a Fase 4 de um sistema bancário desenvolvido em Java. 
-O objetivo é construir uma base sólida e profissional que servirá como fundação para as próximas fases do sistema. O sistema permite o cadastramento de contas, realização de saques e depósitos, tudo através de um menu interativo no terminal
+This Project is the fifth phase of a Bank System in Java. The objective is to build a solid and professional base that will be as fundation for the next system's phases.
+The system allows the register accounts, making withdrawals and deposits, all through an interactive menu by terminal.
 
-## Requisitos Técnicos Aplicados
+## Techinal Requirements Applied
  
-| Requisito           | Descrição                                                                 |
-|---------------------|---------------------------------------------------------------------------|
-| **Domínio Invertido** | Pacote raiz: `br.com.sistemabancario2026`                               |
-| **Arquitetura MVC** | Separação em `model` (dados) e `view` (interação)                        |
-| **Clean Code**      | Nomes de variáveis descritivos e métodos com responsabilidade única       |
-| **DRY**             | Lógica de confirmação centralizada no método `confirmarOperacao()`        |
+| Requirements         | Description                                                       |
+|----------------------|-------------------------------------------------------------------|
+| **Inverted Domain**  | Main package: `br.com.sistemabancario2026`                        |
+| **MVC Architecture** | Separation between `model` (data) and `view` (interactivity)      |
+| **Clean Code**       | Descriptive variable names and methods with unique responsability |
+| **DRY**              | Confirmation logic centralized in method `confirmarOperacao()`    |
  
 ---
