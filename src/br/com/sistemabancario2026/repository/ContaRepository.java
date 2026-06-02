@@ -22,7 +22,9 @@ public class ContaRepository {
                                     limite + "\n";
 
                 bufferedWriter.write(linhaTexto);
+
             }
+            bufferedWriter.close();
         } catch (IOException e) {
 
             System.out.println("Não foi possível concluir a operação!");
