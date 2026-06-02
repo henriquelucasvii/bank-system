@@ -1,7 +1,7 @@
 package br.com.sistemabancario2026.view;
 
 import br.com.sistemabancario2026.model.*;
-import com.sun.source.tree.WhileLoopTree;
+import br.com.sistemabancario2026.repository.*;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -13,8 +13,12 @@ public class LabSistema {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
         LabSistema app = new LabSistema();
+        app.iniciarSistema();
         app.exibirMenu();
+    }
 
+    public void iniciarSistema() {
+        this.listaContas = (ArrayList<Conta>) ContaRepository.carregarDadosCSV();
     }
 
     public void exibirMenu() {
@@ -33,11 +37,16 @@ public class LabSistema {
                 case 3 -> executarDeposito(sc);
                 case 4 -> executarConsulta(sc);
                 case 5 -> executarAtualizacaoJuros();
-                case 0 -> System.out.println("Encerrando o programa");
+                case 0 -> executarSaida();
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
         }
         sc.close();
+    }
+
+    public void executarSaida() {
+        ContaRepository.salvarDados(this.listaContas);
+        System.out.println("Sistema encerrado e dados guardados com sucesso no arquivo contas.csv");
     }
 
     private void executarCadastramento(Scanner sc) {
@@ -219,7 +228,7 @@ public class LabSistema {
             try {
                 int valor = Integer.parseInt(valorEntrada);
 
-                if (valor > 0) {
+                if (valor >= 0) {
                     return valor;
                 }
 
@@ -249,6 +258,4 @@ public class LabSistema {
 
         return conta;
     }
-
-    //
 }

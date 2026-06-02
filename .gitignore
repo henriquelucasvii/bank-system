@@ -28,3 +28,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+src/br/com/sistemabancario2026/repository/*.csv
