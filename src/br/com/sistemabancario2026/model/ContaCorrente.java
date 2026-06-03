@@ -1,8 +1,8 @@
 package br.com.sistemabancario2026.model;
 
-public class ContaCorrente extends Conta {
+public class Conta06Corrente extends Conta06 {
 
-    public ContaCorrente(int numeroAgencia, int numeroConta, String nomeCliente, double saldo) {
+    public Conta06Corrente(int numeroAgencia, int numeroConta, String nomeCliente, double saldo) {
         super(numeroAgencia, numeroConta, nomeCliente, saldo);
     }
 }
