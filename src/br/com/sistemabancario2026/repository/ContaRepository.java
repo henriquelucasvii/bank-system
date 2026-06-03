@@ -43,11 +43,10 @@ public class ContaRepository {
                 if (row == null) break;
 
                 String[] data = row.split(";");
-
                 Conta conta = getConta(data);
-
                 listaConta.add(conta);
-                return listaConta;
+
+                row = bufferedReader.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
