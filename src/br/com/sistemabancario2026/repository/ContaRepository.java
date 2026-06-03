@@ -39,8 +39,7 @@ public class ContaRepository {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String row = bufferedReader.readLine();
-            while (true) {
-                if (row == null) break;
+            while (row != null) {
 
                 String[] data = row.split(";");
                 Conta conta = getConta(data);
@@ -48,6 +47,13 @@ public class ContaRepository {
 
                 row = bufferedReader.readLine();
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+
+        } catch (NumberFormatException e) {
+            System.out.println("ERRO: Os dados numéricos do arquivo estão corrompidos.");
+            e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
