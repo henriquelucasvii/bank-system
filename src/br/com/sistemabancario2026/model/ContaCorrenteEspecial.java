@@ -1,9 +1,9 @@
 package br.com.sistemabancario2026.model;
 
-public class Conta06CorrenteEspecial extends Conta06 {
+public class ContaCorrenteEspecial extends Conta {
     private float limite;
 
-    public Conta06CorrenteEspecial(int numeroAgencia, int numeroConta, String nomeCliente, double saldo, float limite) {
+    public ContaCorrenteEspecial(int numeroAgencia, int numeroConta, String nomeCliente, double saldo, float limite) {
         super(numeroAgencia, numeroConta, nomeCliente, saldo);
         this.limite = limite;
     }
