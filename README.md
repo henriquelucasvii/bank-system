@@ -5,11 +5,12 @@ The system allows the register accounts, making withdrawals and deposits, all th
 
 ## Techinal Requirements Applied
  
-| Requirements         | Description                                                                        |
-|----------------------|------------------------------------------------------------------------------------|
-| **Inverted Domain**  | Main package: `br.com.sistemabancario2026`                                         |
+| Requirements         | Description                                                                      |
+|----------------------|----------------------------------------------------------------------------------|
+| **Inverted Domain**  | Main package: `br.com.sistemabancario2026`                                       |
 | **MVC Architecture** | Separation between `model` (logic), `repository` (data) and `view` (interactivity) |
-| **Clean Code**       | Descriptive variable names and methods with unique responsability                  |
-| **DRY**              | Confirmation logic centralized in method `confirmarOperacao()`                     |
- 
+| **Clean Code**       | Descriptive variable names and methods with unique responsability                |
+| **DRY**              | Confirmation logic centralized in method `confirmarOperacao()`                   |
+| **Files Manager**    | File manager with BufferedReader and BufferedWriter.                                                                                 |
+
 ---
